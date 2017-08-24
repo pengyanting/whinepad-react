@@ -1,6 +1,5 @@
 const webpack = require('webpack')
 const {resolve} = require('path')
-
 module.exports = {
     entry: ['./src/index.js'],
     output: {
@@ -28,7 +27,14 @@ module.exports = {
                 loader: 'eslint-loader'
             }, {
                 test: /\.css$/,
-                loader: "style-loader!css-loader"
+                loader: "style-loader!css-loader?modules&localIdentName=[name]__[local]-[hash:base64:5]"
+            },{
+                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                loader: 'url-loader',
+                options: {
+                  limit: 10000,
+                  name: 'img/[name].[hash:7].[ext]'
+                }
             }
         ]
     },

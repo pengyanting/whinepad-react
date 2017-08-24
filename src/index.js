@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import ToDoApp from './components/ToDoApp'
+import Whinepad from './components/Whinepad'
 
 class HelloWorld extends React.Component {
   render () {
     return (
-      <ToDoApp/>
+      <Whinepad/>
     )
   }
 }

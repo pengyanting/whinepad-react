@@ -1,0 +1,72 @@
+table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.th {
+    font-weight: 400;
+    color: #7f7f7f;
+    font-size: 13px;
+    height: 30px;
+    text-align: center;
+}
+
+.name,
+.year {
+    composes: th;
+    width: 10%;
+}
+
+.grape {
+    composes: th;
+    width: 15%;
+}
+
+.rating {
+    composes: th;
+    width: 25%;
+}
+
+.action {
+    composes: th;
+    width: 35%;
+}
+
+.td {
+    border-right: 1px solid #F0F0F0;
+    border-bottom: 1px solid #F0F0F0;
+    background: #fff;
+    padding: 0 10px;
+    height: 58px;
+    text-align: center;
+}
+
+.td:last-child {
+    border-right: none;
+}
+
+.td_name {
+    composes:td;
+    font-weight: 700;
+}
+
+.td_year {
+    composes:td;
+    color: #7f7f7f;
+    text-align: center;
+}
+
+.td_grape {
+    composes:td;
+    font-weight: 700;
+    color: #6f001b;
+}
+.td_action{
+    composes:td;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.td_action span{
+    cursor: pointer;
+}

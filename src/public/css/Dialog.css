@@ -1,0 +1,75 @@
+.alertBox{
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.boxInner{
+  width: 350px;
+  height: 500px;
+  position: absolute;
+  left:0;top:0;
+  right: 0;bottom: 0;
+  margin: auto;
+}
+.header {
+ width: 100%;
+ height: 80px;
+ background: #6f001b;
+ display: flex;
+ align-items: center;
+ color: #fff;
+ font-family: Norican, cursive;
+ padding: 20px;
+ font-size: 40px;
+}
+.btn {
+ width: 70px;
+ height: 30px;
+ display: flex;
+ align-items: center;
+ justify-content: space-around;
+ font-size: 20px;
+ background: #6f001b;
+ border-radius: 50px;
+ color: #fff;
+ font-weight: 700;
+ font-size: 20px;
+ padding: 0 10px;
+ cursor: pointer;
+ margin-left:10px;
+}
+.footer{
+ width: 100%;
+ height: 80px;
+ background: #fff;
+ border-top: 1px solid #ccc;
+ display: flex;
+ justify-content: flex-end;
+ align-items:center;
+ padding: 0 10px;
+}
+.footer span{
+ cursor: pointer;
+}
+.center{
+ max-height: 340px;
+ overflow-y: auto;
+ background: #fff;
+ padding: 10px 30px;
+}
+.center label{
+ width: 100%;
+ display: block;
+ font-size:13px;
+ color: #7f7f7f;
+ margin-bottom:5px;
+ margin-top:10px;
+}
+.center  input,.center  select{
+ padding:5px 10px;
+ outline: none;
+ width: 180px;
+}
