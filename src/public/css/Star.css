@@ -1,0 +1,35 @@
+ul {
+    display: flex;
+    align-items: center;
+    width: auto;
+}
+
+ul,
+li {
+    padding: 0;
+    margin: 0;
+    height: 15px;
+}
+
+li {
+    list-style-type: none;
+    float: left;
+    cursor: pointer;
+}
+
+.star_item {
+    width: 15px;
+    height: 15px;
+    background-image: url(../img/star.png);
+    background-repeat: no-repeat;
+    
+    background-size: cover;
+}
+.pos{
+    composes:star_item;
+    background-position: -17px 0px;
+}
+.pos_0{
+    composes:star_item;
+    background-position: 0px;
+}
