@@ -5,6 +5,7 @@ import Head from './Head'
 import Button from './Button'
 import styles from '../public/css/style.css'
 import Dialog from './Dialog'
+import Star from './Star'
 class Whinepad extends React.Component {
   constructor (props) {
     super(props)
@@ -16,7 +17,7 @@ class Whinepad extends React.Component {
         name: '',
         grape: '',
         year: 0,
-        rating: '',
+        rating: 1,
         commits: ''
       },
       index: ''
@@ -27,6 +28,9 @@ class Whinepad extends React.Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleInfo = this.handleInfo.bind(this)
+    this.handleClick = this.handleClick.bind(this)
+    this.handleMove = this.handleMove.bind(this)
+    this.handleOut = this.handleOut.bind(this)
   }
   handleDialogShow (index) {
     this.setState((old) => ({
@@ -50,9 +54,10 @@ class Whinepad extends React.Component {
         name: '',
         grape: '',
         year: 0,
-        rating: '',
+        rating: 1,
         commits: ''
-      }
+      },
+      saveNum: 1
     }))
   }
   handleDelete (index) {
@@ -63,6 +68,14 @@ class Whinepad extends React.Component {
   handleInputChange (i) {
     const name = i.target.name
     const value = i.target.value
+    if (name === 'search') {
+      this.setState((old) => ({
+        list: old.list.filter(function (item) {
+          // 此处fiter为javascript数组对象的一个方法，用于检测数值元素，并返回符合条件所有元素的数组
+          return item.name.toLowerCase().indexOf(value.toLowerCase()) !== -1
+        })
+      }))
+    }
     this.setState((old) => ({
       form: Object.assign({}, old.form, {[name]: value})
     }))
@@ -71,6 +84,22 @@ class Whinepad extends React.Component {
     this.setState((old) => ({
       dialogInfoShow: !old.dialogShow,
       form: item
+    }))
+  }
+  handleClick (index) {
+    this.setState((old) => ({
+      form: Object.assign({}, old.form, {rating: index + 1}),
+      saveNum: index + 1
+    }))
+  }
+  handleMove (index) {
+    this.setState((old) => ({
+      form: Object.assign({}, old.form, {rating: index + 1})
+    }))
+  }
+  handleOut () {
+    this.setState((old) => ({
+      form: Object.assign({}, old.form, {rating: old.saveNum})
     }))
   }
   render () {
@@ -84,7 +113,7 @@ class Whinepad extends React.Component {
         <div className={styles.box}>
           <div className={styles.box_top}>
             <Button value='+ Add' size='big' onClick={this.handleDialogShow}/>
-            <Input/>
+            <Input name='search' type='text' onChange={this.handleInputChange}/>
           </div>
           <List
             list={this.state.list}
@@ -103,7 +132,14 @@ class Whinepad extends React.Component {
                 <Input label='Name' name='name' value={this.state.form.name} type='text' onChange={this.handleInputChange}/>
                 <Input label='Year' value={this.state.form.year} name='year' type='number' onChange={this.handleInputChange}/>
                 <Input label='Grape' value={this.state.form.grape} name='grape' type='select' options={options} onChange={this.handleInputChange}/>
-                <Input label='Rating'/>
+                <div>
+                  <label>Star</label>
+                  <Star
+                    score={this.state.form.rating}
+                    click={this.handleClick}
+                    move={this.handleMove}
+                    out={this.handleOut}/>
+                </div>
                 <Input label='Commits' value={this.state.form.commits} name='commits' type='textarea' onChange={this.handleInputChange}/>
               </form>
             </section>
@@ -135,7 +171,7 @@ class Whinepad extends React.Component {
                 </div>
                 <div>
                   <label>Rating</label>
-                  <div>{this.state.form.rating}</div>
+                  <div><Star score={this.state.form.rating} disabled/></div>
                 </div>
                 <div>
                   <label>Commits</label>

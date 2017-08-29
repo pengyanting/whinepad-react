@@ -13,7 +13,7 @@ class List extends React.Component {
           <td className={styles.td_year}>{item.year}</td>
           <td className={styles.td_grape}>{item.grape}</td>
           <td className={styles.td}>
-            <Star/>
+            <Star score={item.rating} disabled/>
           </td>
           <td>
             <div className={styles.td_action}>
