@@ -6,6 +6,7 @@ import Button from './Button'
 import styles from '../public/css/style.css'
 import Dialog from './Dialog'
 import Star from './Star'
+import { Link } from 'react-router-dom'
 class Whinepad extends React.Component {
   constructor (props) {
     super(props)
@@ -110,6 +111,7 @@ class Whinepad extends React.Component {
     return (
       <div>
         <Head/>
+        <Link to='/'>Home</Link>
         <div className={styles.box}>
           <div className={styles.box_top}>
             <Button value='+ Add' size='big' onClick={this.handleDialogShow}/>
