@@ -1,43 +1,11 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { createStore } from 'redux'
-import Counter from './components/Counter'
-import counter from './reducers'
-import { BrowserRouter, Router, HashRouter, Match, Route, Link, HashHistory, IndexLink } from 'react-router-dom'
-import Whinepad from './components/Whinepad'
-const store = createStore(counter)
+import React, {Component, PropTypes} from 'react'
+import ReactDOM, {render} from 'react-dom'
+import route from './Router/Route.jsx' // 路由配置
+import './libs/config'
 const rootEl = document.getElementById('app')
-
-class App extends React.Component {
-  render () {
-    return (
-      <div>
-        <h1>App</h1>
-        <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/whinepad">whinepad</Link></li>
-        </ul>
-        {this.props.children}
-      </div>
-    )
-  }
-}
-const Home = () => (
+render(
   <div>
-    <h3>Home</h3>
-  </div>
+    {route}
+  </div>,
+  document.body.appendChild(document.createElement('div'))
 )
-const render = () => ReactDOM.render((
-  <div>
-    <BrowserRouter>
-      <App>
-        <Route exact path="/" component={Home} />
-        <Route path="/whinepad" component={Whinepad} />
-      </App>
-    </BrowserRouter>
-  </div>
-), rootEl
-)
-
-render()
-store.subscribe(render)

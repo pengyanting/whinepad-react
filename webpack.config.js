@@ -9,7 +9,7 @@ module.exports = {
     },
     resolve: {
         extensions: [
-          '.js', '.jsx'
+          '.js', '.jsx', 'scss'
         ]
       },
     module: {
@@ -28,6 +28,9 @@ module.exports = {
             }, {
                 test: /\.css$/,
                 loader: "style-loader!css-loader?modules&localIdentName=[name]__[local]-[hash:base64:5]"
+            }, {
+                test: /\.scss$/,
+                loader: "style-loader!css-loader?modules&localIdentName=[name]__[local]-[hash:base64:5]!sass-loader"
             },{
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
                 loader: 'url-loader',

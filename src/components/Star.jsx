@@ -14,7 +14,7 @@ class Star extends React.Component {
         </li>)
     }
     return (
-      <ul>{item}</ul>
+      <ul class='star'>{item}</ul>
     )
   }
 }

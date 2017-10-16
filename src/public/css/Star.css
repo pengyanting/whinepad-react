@@ -1,23 +1,23 @@
-ul {
+.star {
     display: flex;
     align-items: center;
     width: auto;
 }
 
-ul,
-li {
+.star,
+.star li {
     padding: 0;
     margin: 0;
     height: 15px;
 }
 
-li {
+.star li {
     list-style-type: none;
     float: left;
     cursor: pointer;
 }
 
-.star_item {
+.star .star_item {
     width: 15px;
     height: 15px;
     background-image: url(../img/star.png);
