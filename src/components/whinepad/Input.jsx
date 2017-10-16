@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../public/css/Input.css'
+import styles from '../../public/css/Input.css'
 const Input = (props) => {
   let input = null
   switch (props.type) {

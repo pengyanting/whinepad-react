@@ -26,8 +26,8 @@ export default class Head extends Component {
   render () {
     let {nav, saleRecord, title, HideList, goback, save, productsInform, applyRecord, params} = this.props
     let navState = this.state.showHide
-    return (
-      <header className={styles.header}>
+    if (nav) {
+      nav = (
         <div className={styles.head_menu} onClick={ this.showNav }>
           <ul className={styles.head_menu_list} style={{ display: navState }}>
             <li>
@@ -37,27 +37,36 @@ export default class Head extends Component {
               </Link>
             </li>
             <li>
-              <Link to='/'>
+              <Link to='/applyDisposit'>
                 <span>提现</span>
                 <span className={styles.head_arrow}></span>
               </Link>
             </li>
             <li>
-              <Link to='/'>
+              <Link to='/helperCenter'>
                 <span>帮助中心</span>
                 <span className={styles.head_arrow}></span>
               </Link>
             </li>
           </ul>
         </div>
+      )
+    }
+    if (goback) {
+      goback = (<span className={styles.head_goback + styles.left} onClick={() => window.history.back()}>返回</span>)
+    }
+    return (
+      <header className={styles.header}>
+        { nav }
+        { goback }
         {
           title && <span className={styles.head_title}>{title}</span>
         }
         {
-          saleRecord && <Link to="/" className={styles.head_icon_right}></Link>
+          saleRecord && <Link to="/saleRecord" className={styles.head_icon_right}></Link>
         }
         {
-          applyRecord && <Link to='/' className={styles.head_icon_right}></Link>
+          applyRecord && <Link to='/applyRecord' className={styles.head_icon_right}></Link>
         }
       </header>
     )

@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../public/css/Star.css'
+import styles from '../../public/css/Star.css'
 class Star extends React.Component {
   render () {
     let item = []

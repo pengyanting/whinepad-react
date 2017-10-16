@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../public/css/List.css'
+import styles from '../../public/css/List.css'
 import Star from './Star'
 class List extends React.Component {
   constructor (props) {
