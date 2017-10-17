@@ -51,6 +51,15 @@
       }
     }
 }
+.head_goback{
+    line-height: 2.2rem;
+    font-size: .7rem;
+    color: #fff;
+    margin-left: .5rem;
+    padding-left: .85rem;
+    background: url(../img/back.png) no-repeat 0;
+    background-size: .5rem .85rem;
+}
 .head_icon_right{
     height: 1.1rem;
     width: .9rem;
@@ -60,4 +69,11 @@
     right: .5rem;
     top: 50%;
     margin-top: -.55rem;
+}
+.head_save{
+    float: right;
+    font-size: .7rem;
+    line-height: 2.2rem;
+    color: #fff;
+    margin-right: .75rem;
 }

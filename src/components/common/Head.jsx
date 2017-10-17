@@ -53,7 +53,7 @@ export default class Head extends Component {
       )
     }
     if (goback) {
-      goback = (<span className={styles.head_goback + styles.left} onClick={() => window.history.back()}>返回</span>)
+      goback = (<span className={styles.head_goback} onClick={() => window.history.back()}>返回</span>)
     }
     return (
       <header className={styles.header}>
@@ -67,6 +67,9 @@ export default class Head extends Component {
         }
         {
           applyRecord && <Link to='/applyRecord' className={styles.head_icon_right}></Link>
+        }
+        {
+          save && <Link to={'/index?' + params} className={styles.head_save}>确定</Link>
         }
       </header>
     )

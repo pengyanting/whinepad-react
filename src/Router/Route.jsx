@@ -24,6 +24,7 @@ const RouteConfig = (
   <BrowserRouter history={HashHistory}>
     <Roots>
       <Route exact path='/' component={Home}/>
+      <Route exact path='/index' component={Home}/>
       <Route path="/whinepad" component={whinepad}/>
       <Route path="/helperCenter" component={HelperCenter}/>
       <Route path="/saleRecord" component={SaleRecord}/>
