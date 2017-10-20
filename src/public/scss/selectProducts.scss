@@ -1,0 +1,22 @@
+@import './common.scss';
+.list{
+    .list_item{
+       display: flex;
+       padding: .75rem;
+       background: #fff;
+       border-bottom: 1px solid #ebebeb;
+       .name{
+           background:url(../img/check_no.png) no-repeat;
+           background-size: 1.05rem 1.05rem;
+           width: 7.5rem;
+           font-size: .8rem;
+           color: #333;
+           line-height: 1.15rem;
+           padding-left: 1.75rem;
+       }
+       .check{
+           background: url(../img/check.png) no-repeat;
+           background-size: 1.05rem 1.05rem;
+       }
+    }
+}

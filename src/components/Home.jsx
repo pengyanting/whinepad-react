@@ -3,44 +3,68 @@ import Head from './common/Head'
 import classNames from 'classnames/bind'
 import * as styles from '../public/scss/home.scss'
 import { Link } from 'react-router-dom'
+import { Tool } from '../libs/tool'
 let cn = classNames.bind(styles)
 /**
  * 首页（销售录入）
  */
 export default class Home extends React.Component {
-  constructor (prop) {
+  constructor (props) {
     super()
     this.state = {
       products: [{name: 'ipone5S', num: 1}, {name: 'ipone6S', num: 2}],
       saleMoney: '',
       name: '',
       phone: '',
-      saleOldvalue: ''
+      saleOldvalue: '',
+      preventMountSubmit: true // 防止重复提交
     }
-    this.changeValue = (type, event) => {
-      if (type === 'money') {
-        let value = event.target.value
-        if ((/^\d*?\.?\d{0,2}?$/gi).test(value)) {
-          if ((/^0+[1-9]+/).test(value)) {
-            value = value.replace(/^0+/, '')
-          }
-          if ((/^0+0\./).test(value)) {
-            value = value.replace(/^0+/, '0')
-          }
-          value = value.replace(/^\./gi, '0.')
-          this.state.saleOldvalue = value
-          this.state.inputLength = value.length
-        } else {
-          value = this.state.saleOldvalue
+    this.changeValue = this.changeValue.bind(this)
+    // this.postInform = this.postInform.bind(this)
+    this.postInform = () => {
+      if (this.state.saleMoney === '') {
+        Tool.alert('请输入订单金额')
+      } else if (this.state.name === '') {
+        Tool.alert('请输入客户姓名')
+      } else if (this.state.phone === '' || !/^1\d{10}$/.test(this.state.phone)) {
+        Tool.alert('请输入正确的电话号码')
+      } else if (this.state.products.length === 0) {
+        Tool.alert('请选择销售产品')
+      } else {
+        if (this.state.preventMountSubmit) {
+          this.setState({ preventMountSubmit: false })
         }
-        this.setState({
-          saleMoney: value
-        })
-      } else if (type === 'name') {
-        this.setState({
-          name: event.target.value
-        })
-      } else if (type === 'phone') {}
+      }
+    }
+  }
+  changeValue (type, event) {
+    if (type === 'money') {
+      let value = event.target.value
+      if ((/^\d*?\.?\d{0,2}?$/gi).test(value)) {
+        if ((/^0+[1-9]+/).test(value)) {
+          value = value.replace(/^0+/, '')
+        }
+        if ((/^0+0\./).test(value)) {
+          value = value.replace(/^0+/, '0')
+        }
+        value = value.replace(/^\./gi, '0.')
+        this.state.saleOldvalue = value
+        this.state.inputLength = value.length
+      } else {
+        value = this.state.saleOldvalue
+      }
+      this.setState({
+        saleMoney: value
+      })
+    } else if (type === 'name') {
+      this.setState({
+        name: event.target.value
+      })
+    } else if (type === 'phone') {
+      let value = event.target.value.replace(/\D/gi, '')
+      this.setState({
+        phone: value
+      })
     }
   }
   render () {
@@ -54,15 +78,15 @@ export default class Home extends React.Component {
         <form>
           <div className={styles.input_container}>
             <label htmlFor="">销售金额</label>
-            <input type="text" value={this.state.saleMoney} onChange={this.changValue.bind(this, 'money')} placeholder='请输入订单金额'/>
+            <input type="text" value={this.state.saleMoney} onChange={e => { this.changeValue('money', e) }} placeholder='请输入订单金额'/>
           </div>
           <div className={styles.input_container}>
             <label htmlFor="">客户姓名</label>
-            <input type="text" value={this.state.name} onChange={this.changeValue.bind(this, 'name')} placeholder='请输入客户姓名'/>
+            <input type="text" value={this.state.name} onChange={e => { this.changeValue('name', e) }} placeholder='请输入客户姓名'/>
           </div>
           <div className={styles.input_container}>
             <label htmlFor="">客户电话</label>
-            <input type="text" value={this.state.phone} onChange={this.changeValue.bind(this, 'phone')} placeholder='请输入客户电话'/>
+            <input type="text" maxLength='11' value={this.state.phone} onChange={e => { this.changeValue('phone', e) }} placeholder='请输入客户电话'/>
           </div>
         </form>
         <div className={styles.index_tips}>

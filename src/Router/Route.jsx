@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react'
-import { Router, Route, IndexLink, BrowserRouter, HashHistory, HashRouter, Link } from 'react-router-dom'
+import { Router, Route, IndexLink, BrowserRouter, BrowserHistory, HashHistory, HashRouter, Link } from 'react-router-dom'
 
 import Home from '../components/Home' // 首页
 import whinepad from '../components/whinepad/Whinepad'
@@ -21,7 +21,7 @@ class Roots extends Component {
 }
 
 const RouteConfig = (
-  <BrowserRouter history={HashHistory}>
+  <HashRouter history={BrowserHistory}>
     <Roots>
       <Route exact path='/' component={Home}/>
       <Route exact path='/index' component={Home}/>
@@ -33,6 +33,6 @@ const RouteConfig = (
       <Route path="/applyDisposit" component={ApplyDisposit}/>
       {<Route path="/applyRecord" component={ApplyRecord}/>}
     </Roots>
-  </BrowserRouter>
+  </HashRouter>
 )
 export default RouteConfig
