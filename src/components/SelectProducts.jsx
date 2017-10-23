@@ -1,8 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import Head from './common/Head'
 import * as styles from '../public/scss/selectProducts.scss'
 import classNames from 'classnames/bind'
-
+import pureRender from 'pure-render-decorator'
+import { History, Link } from 'react-router'
+import { connect } from 'react-redux'
+import template from './common/template'
 let cn = classNames.bind(styles)
 /**
  * 选择商品
@@ -13,7 +16,7 @@ class List extends Component {
   }
   render () {
     let listItem = this.props.list.map((item, index) => {
-      return <ListItem key={index} item={item} index={index}/>
+      return <ListItem key={index} {...item} index={index}/>
     })
     return (
       <ul className={styles.list}>{listItem}</ul>
@@ -22,37 +25,92 @@ class List extends Component {
 }
 class ListItem extends Component {
   constructor (props) {
-    super()
+    super(props)
     this.state = {
-      productCount: 0,
-      chooseState: false
+      productCount: this.props.num,
+      chooseState: this.props.chooseState
     }
     this.handleChange = (e) => {
-      this.setState({ productCount: e.target.value })
+      if (this.state.chooseState) {
+        let newValue = event.target.value
+        newValue = Number(newValue.replace((/\D+/gi), ''))
+        this.setState({
+          productCount: newValue
+        })
+      }
     }
     this.getCount = () => {}
+    this.changeState = () => {
+      this.setState({ chooseState: !this.state.chooseState })
+    }
   }
   render () {
-    let { item, id } = this.props
+    let { productName, id } = this.props
+    console.log(productName)
     let productCount = this.state.productCount
     return (
       <li className={styles.list_item}>
-        <div className={cn('name', { check: this.state.chooseState })}>{item.productName}</div>
+        <div className={cn('name', { check: this.state.chooseState }, 'ellips')} onClick={this.changeState.bind(this)}>{productName}</div>
         <div className={styles.count}>
           <button disabled={productCount > 0 ? '' : 'disabled'} className={cn('button_style', { 'reduce': productCount > 0, 'reduce_no': productCount <= 0 })} onClick={this.getCount.bind(this, 'reduce')}></button>
-          <input className={styles.count_name} type='text' maxLength='4' value={productCount} onClick={this.handleChange.bind(this)}/>
+          <input className={styles.count_num} type='text' maxLength='4' value={productCount} onClick={this.handleChange}/>
           <button className={cn('button_style', 'add')} onClick={this.getCount.bind(this, 'add')}></button>
         </div>
       </li>
     )
   }
 }
-export default class SelectProducts extends Component {
-  constructor (props) {
-    super()
+class SelectProducts extends Component {
+  constructor (props, context) {
+    super(props, context)
     this.state = {
-      productList: [{ productName: '111' }, { productName: '222' }]
+      productList: [],
+      params: '', // 传入的参数
+      shouldUpdate: false, // 是否可以更新
+      num: 0,
+      requestID: null
     }
+    this.productState = (id, chooseState, num, index) => {
+      this.state.productList[index].chooseState = chooseState
+      this.state.productList[index].num = num
+      this.saveProductlist(this.state.productList)
+    }
+  }
+  getChildContext () {
+    return {
+      recordState: this.props.recordState
+    }
+  }
+  componentWillReceiveProps (nextProps) { // 在组件接收到新的 props 的时候调用。在初始化渲染的时候，该方法不会调用。
+    this.state.shouldUpdate = false
+    if (this.props !== nextProps) {
+      let data = nextProps.state.data
+      if (nextProps.producRecord.productList && this.state.productList.length === 0) {
+        this.state.shouldUpdate = true
+        this.state.productList = nextProps.producRecord.productList
+      } else if (data && data.data && data.data.data && this.state.productList.length === 0) {
+        this.state.shouldUpdate = true
+        let list = data.data.data
+        this.props.newProductData(list)
+        list.forEach((item, index) => {
+          this.state.productList[index] = {}
+          this.state.productList[index]['productName'] = item.product_name
+          this.state.productList[index]['chooseState'] = false
+          this.state.productList[index]['num'] = 1
+          this.state.productList[index]['id'] = item.product_id
+        })
+      }
+      if (nextProps.producRecord.id) {
+        let { producRecord } = nextProps
+        this.productState(producRecord.id, producRecord.chooseState, producRecord.num, producRecord.index)
+      }
+    }
+  }
+  componentWillMount () { // 在初始化渲染执行之前立刻调用。
+    this.params = this.props.location.search
+  }
+  componentWillUnmount () { // 在组件从 DOM 中移除的时候立刻被调用。
+    cancelAnimationFrame(this.state.requestID)
   }
   render () {
     return (
@@ -65,3 +123,11 @@ export default class SelectProducts extends Component {
     )
   }
 }
+SelectProducts.childContextTypes = {
+  recordState: React.PropTypes.any // proptypes react的类型检测，这里可以是任何类型
+}
+export default template({
+  id: 'chooseProducts', // 应用关联使用的redux
+  component: SelectProducts, // 接收数据的组件入口
+  url: '/shopro/data/products'
+})

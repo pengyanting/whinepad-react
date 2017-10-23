@@ -5,6 +5,7 @@
        padding: .75rem;
        background: #fff;
        border-bottom: 1px solid #ebebeb;
+       justify-content: space-between;
        .name{
            background:url(../img/check_no.png) no-repeat;
            background-size: 1.05rem 1.05rem;
@@ -17,6 +18,35 @@
        .check{
            background: url(../img/check.png) no-repeat;
            background-size: 1.05rem 1.05rem;
+       }
+       .count {
+          display: flex;
+          .button_style {
+            height: 1.15rem;
+            width: 1.15rem;
+            border-radius: 50%;
+            vertical-align: middle;
+          }
+          .reduce{
+            background: url(../img/reduce.png) no-repeat 0;
+            background-size: 1.15rem 1.15rem;
+          }
+          .reduce_no{
+            background: url(../img/reduce_no.png) no-repeat 0;
+            background-size: 1.15rem 1.15rem;
+          }
+          .add{
+            background: url(../img/add.png) no-repeat 0;
+            background-size: 1.15rem 1.15rem;
+          }
+          .count_num{
+            font-size: .8rem;
+            line-height: 1.15rem;
+            width: 2rem;
+            padding-left: .15rem;
+            vertical-align: bottom;
+            text-align: center;
+          }
        }
     }
 }

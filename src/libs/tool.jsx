@@ -29,3 +29,14 @@ Tool.alert = (msg1, msg2) => {
     clearTimeout(timer)
   }, 2000)
 }
+
+Tool.paramType = data => {
+  let paramArr = []
+  let paramStr = ''
+  for (let item in data) {
+    paramArr.push(item + '+' + data[item])
+  }
+  paramStr = paramArr.join('&')
+  paramStr = '?' + paramStr
+  return paramStr
+}
