@@ -37,7 +37,7 @@ export default class Head extends Component {
               </Link>
             </li>
             <li>
-              <Link to='/applyDisposit'>
+              <Link to='/allDisposit'>
                 <span>提现</span>
                 <span className={styles.head_arrow}></span>
               </Link>

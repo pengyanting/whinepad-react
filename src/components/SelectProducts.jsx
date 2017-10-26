@@ -6,6 +6,7 @@ import pureRender from 'pure-render-decorator'
 import { History, Link } from 'react-router'
 import { connect } from 'react-redux'
 import template from './common/template'
+import { is, fromJS } from 'immutable'
 let cn = classNames.bind(styles)
 /**
  * 选择商品
@@ -32,33 +33,54 @@ class ListItem extends Component {
     }
     this.handleChange = (e) => {
       if (this.state.chooseState) {
-        let newValue = event.target.value
+        let newValue = e.target.value
         newValue = Number(newValue.replace((/\D+/gi), ''))
         this.setState({
           productCount: newValue
         })
+        this.context.recordState(this.props.id, this.state.chooseState, newValue, this.props.index)
       }
     }
-    this.getCount = () => {}
-    this.changeState = () => {
-      this.setState({ chooseState: !this.state.chooseState })
+    this.getCount = (type) => {
+      if (this.state.chooseState) {
+        let num = this.state.productCount
+        if (type === 'reduce' && num > 0) {
+          num = num - 1
+          this.setState({ productCount: num })
+        } else if (type === 'add') {
+          num = num + 1
+          this.setState({ productCount: num })
+        }
+        this.context.recordState(this.props.id, this.state.chooseState, num, this.props.index)
+      }
     }
+    this.changeState = () => {
+      let status = !this.state.chooseState
+      this.setState({ chooseState: status })
+      this.context.recordState(this.props.id, status, this.state.productCount, this.props.index)
+    }
+  }
+  shouldComponentUpdate (nextProps, nextState) {
+    return !is(fromJS(this.props), fromJS(nextProps)) || !is(fromJS(this.state), fromJS(nextState))
   }
   render () {
     let { productName, id } = this.props
-    console.log(productName)
     let productCount = this.state.productCount
     return (
       <li className={styles.list_item}>
         <div className={cn('name', { check: this.state.chooseState }, 'ellips')} onClick={this.changeState.bind(this)}>{productName}</div>
         <div className={styles.count}>
           <button disabled={productCount > 0 ? '' : 'disabled'} className={cn('button_style', { 'reduce': productCount > 0, 'reduce_no': productCount <= 0 })} onClick={this.getCount.bind(this, 'reduce')}></button>
-          <input className={styles.count_num} type='text' maxLength='4' value={productCount} onClick={this.handleChange}/>
+          <input className={styles.count_num} type='text' maxLength='4' value={productCount} onChange={this.handleChange}/>
           <button className={cn('button_style', 'add')} onClick={this.getCount.bind(this, 'add')}></button>
         </div>
       </li>
     )
   }
+}
+ListItem.contextTypes = {
+  recordState: React.PropTypes.any,
+  store: React.PropTypes.any
 }
 class SelectProducts extends Component {
   constructor (props, context) {
@@ -73,7 +95,7 @@ class SelectProducts extends Component {
     this.productState = (id, chooseState, num, index) => {
       this.state.productList[index].chooseState = chooseState
       this.state.productList[index].num = num
-      this.saveProductlist(this.state.productList)
+      this.props.saveProductlist(this.state.productList)
     }
   }
   getChildContext () {
@@ -100,6 +122,7 @@ class SelectProducts extends Component {
           this.state.productList[index]['id'] = item.product_id
         })
       }
+      console.log(nextProps.producRecord)
       if (nextProps.producRecord.id) {
         let { producRecord } = nextProps
         this.productState(producRecord.id, producRecord.chooseState, producRecord.num, producRecord.index)
@@ -107,7 +130,8 @@ class SelectProducts extends Component {
     }
   }
   componentWillMount () { // 在初始化渲染执行之前立刻调用。
-    this.params = this.props.location.search
+    console.log(this.props.location.search)
+    this.state.params = this.props.location.search
   }
   componentWillUnmount () { // 在组件从 DOM 中移除的时候立刻被调用。
     cancelAnimationFrame(this.state.requestID)
@@ -115,7 +139,7 @@ class SelectProducts extends Component {
   render () {
     return (
       <div>
-        <Head goback save title='销售商品'/>
+        <Head goback save title='销售商品' params={this.state.params}/>
         {
           this.state.productList.length > 0 ? <List list={this.state.productList}></List> : null
         }

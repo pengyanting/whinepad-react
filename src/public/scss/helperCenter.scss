@@ -1,0 +1,28 @@
+.nav{
+    height: 2.2rem;
+    font-size: .7rem;
+    text-align: center;
+    color: #333;
+    box-sizing: border-box;
+    border-right: .05rem solid #f1f1f1;
+    overflow: hidden;
+    background: #fff;
+    width: 100%;
+    line-height: 2.2rem;
+    span{
+        display: inline-block;
+        line-height: 2rem;
+        border-bottom: 2px solid #985ec9;
+        color: #985ec9;
+    }
+}
+.content{
+    background: #fff;
+    margin-top: .5rem;
+    text-align: center;
+    line-height: 2rem;
+    color: #1F497D;
+    li{
+        line-height: 1.5rem;
+    }
+}

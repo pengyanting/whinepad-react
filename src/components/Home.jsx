@@ -1,18 +1,22 @@
 import React, {Component, PropTypes} from 'react'
+import pureRender from 'pure-render-decorator'
+import { connect } from 'react-redux'
+import template from './common/template'
 import Head from './common/Head'
 import classNames from 'classnames/bind'
+import { is, fromJS } from 'immutable'
 import * as styles from '../public/scss/home.scss'
-import { Link } from 'react-router-dom'
+import { Link, History } from 'react-router-dom'
 import { Tool } from '../libs/tool'
 let cn = classNames.bind(styles)
 /**
  * 首页（销售录入）
  */
-export default class Home extends React.Component {
+class Home extends React.Component {
   constructor (props) {
     super()
     this.state = {
-      products: [{name: 'ipone5S', num: 1}, {name: 'ipone6S', num: 2}],
+      products: [],
       saleMoney: '',
       name: '',
       phone: '',
@@ -20,7 +24,6 @@ export default class Home extends React.Component {
       preventMountSubmit: true // 防止重复提交
     }
     this.changeValue = this.changeValue.bind(this)
-    // this.postInform = this.postInform.bind(this)
     this.postInform = () => {
       if (this.state.saleMoney === '') {
         Tool.alert('请输入订单金额')
@@ -67,6 +70,20 @@ export default class Home extends React.Component {
       })
     }
   }
+  componentWillMount () {
+    let params = this.props.location.query
+    if (this.props.producRecord.productList && this.props.location.search !== '') {
+      let { productList } = this.props.producRecord
+      let num = 0
+      console.log(this.state.products)
+      productList.forEach((item, index) => {
+        if (item.chooseState && item.num > 0) {
+          this.state.products[num] = [item.productName, item.num.toString()]
+          num++
+        }
+      })
+    }
+  }
   render () {
     let products = this.state.products
     return (
@@ -93,15 +110,16 @@ export default class Home extends React.Component {
           <span className={styles.tip_text}>请选择销售的产品</span>
         </div>
         <div className={styles.choose_products}>
-          <Link to='/selectProducts' className={products.length > 0 ? styles.show_icon : styles.link_choose}>{products.length > 0 ? '' : '请选择销售的产品'}</Link>
-          <ul className={styles.products_list}>
+          <Link to={ '/selectProducts?saleMoney=' + this.state.saleMoney + '&name=' + this.state.name + '&phone=' + this.state.phone }
+            className={products.length > 0 ? styles.show_icon : styles.link_choose}>{products.length > 0 ? '' : '请选择销售的产品'}</Link>
+          <ul className={styles.products_list} style={{padding: products.length > 0 ? '.125rem 0' : ''}}>
             {
               products.length > 0 ? products.map((item, index) => {
                 return (
                   <li className={styles.list_item} key={index}>
-                    <span className={styles.product_style}>{item.name}</span>
-                    <span className={cn('product_style', 'x')}>X</span>
-                    <span className={styles.product_style}>{item.num}</span>
+                    <span className={styles.product_style}>{item[0]}</span>
+                    <span className={cn('product_style', 'x')}>x</span>
+                    <span className={styles.product_style}>{item[1]}</span>
                   </li>
                 )
               }) : null
@@ -115,3 +133,8 @@ export default class Home extends React.Component {
     )
   }
 }
+export default template({
+  id: 'index', // 应用关联使用的redux
+  component: Home, // 接收数据的组件入口
+  url: ''
+})
